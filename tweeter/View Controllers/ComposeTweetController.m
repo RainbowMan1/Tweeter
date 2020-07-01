@@ -10,7 +10,7 @@
 #import "APIManager.h"
 
 @interface ComposeTweetController ()
-@property (weak, nonatomic) IBOutlet UITextField *tweetfield;
+@property (weak, nonatomic) IBOutlet UITextView *tweetTextView;
 
 @end
 
@@ -21,11 +21,18 @@
     // Do any additional setup after loading the view.
 }
 - (IBAction)tweet:(id)sender {
-    [[APIManager shared] postStatusWithText:self.tweetfield.text completion:^(Tweet *tweet, NSError *error) {
+    [[APIManager shared] postStatusWithText:self.tweetTextView.text completion:^(Tweet *tweet, NSError *error) {
         if(error){
             NSLog(@"Error composing Tweet: %@", error.localizedDescription);
         }
+        else{
+            [self.delegate didTweet:tweet];
+            NSLog(@"Compose Tweet Success!");
+        }
     }];
+}
+- (IBAction)closeView:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 /*

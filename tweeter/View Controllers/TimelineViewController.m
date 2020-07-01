@@ -12,10 +12,11 @@
 #import "Tweet.h"
 #import "ComposeTweetController.h"
 
-@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeTweetControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NSMutableArray *tweets;
+
 @end
 
 @implementation TimelineViewController
@@ -68,9 +69,17 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    ComposeTweetController *composeTweetController = [segue destinationViewController];
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeTweetController *composeController = (ComposeTweetController*)navigationController.topViewController;
+        composeController.delegate = self;
 }
 
+
+
+- (void)didTweet:(nonnull Tweet *)tweet {
+    [self.tweets insertObject:tweet atIndex:0];
+    [self.tableView reloadData];
+}
 
 
 @end
