@@ -28,6 +28,7 @@
         else{
             [self.delegate didTweet:tweet];
             NSLog(@"Compose Tweet Success!");
+            [self closeView: sender];
         }
     }];
 }

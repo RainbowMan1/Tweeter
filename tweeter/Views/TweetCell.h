@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "TTTAttributedLabel.h"
+#import "Tweet.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TweetCell : UITableViewCell
+@property (strong, nonatomic)Tweet* tweet;
 @property (weak, nonatomic) IBOutlet UILabel* nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel* screenNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel* dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel* tweetLabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel* tweetLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-
+@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (weak, nonatomic) IBOutlet UIButton *retweetButton;
+- (void)updateCell;
 @end
 
 NS_ASSUME_NONNULL_END

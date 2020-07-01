@@ -12,6 +12,7 @@
 #import "Tweet.h"
 #import "ComposeTweetController.h"
 
+
 @interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeTweetControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
@@ -54,8 +55,8 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     TweetCell *cell =[tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     Tweet *tweet = self.tweets[indexPath.row];
-    cell.nameLabel.text = tweet.user.name;
-    cell.tweetLabel.text = tweet.text;
+    cell.tweet = tweet;
+    [cell updateCell];
     return cell;
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -69,9 +70,14 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-        UINavigationController *navigationController = [segue destinationViewController];
-        ComposeTweetController *composeController = (ComposeTweetController*)navigationController.topViewController;
-        composeController.delegate = self;
+    if ([sender isKindOfClass: [UIBarButtonItem class]]){
+        UIBarButtonItem *pressedButton = (UIBarButtonItem*) sender;
+        if ( [pressedButton.title isEqualToString: @"Compose"]){
+            UINavigationController *navigationController = [segue destinationViewController];
+            ComposeTweetController *composeController = (ComposeTweetController*)navigationController.topViewController;
+            composeController.delegate = self;
+        }
+    }
 }
 
 

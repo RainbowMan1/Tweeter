@@ -7,6 +7,7 @@
 //
 
 #import "TweetCell.h"
+#import "APIManager.h"
 
 @implementation TweetCell
 
@@ -19,6 +20,65 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+- (IBAction)favoritePressed:(id)sender {
+    if (self.tweet.favorited){
+        [[APIManager shared] unfavorite:self.tweet completion:^(Tweet * tweet, NSError * error) {
+        if (!error){
+            self.tweet = tweet;
+      [self updateCell];
+        }
+    }];
+            
+    }
+    else{
+    [[APIManager shared] favorite:self.tweet completion:^(Tweet * tweet, NSError * error) {
+        if (!error){
+        self.tweet = tweet;
+        [self updateCell];
+        }
+    }];
+    }
+}
+- (IBAction)retweetPressed:(id)sender {
+    if (self.tweet.retweeted){
+        [[APIManager shared] unretweet:self.tweet completion:^(Tweet * tweet, NSError * error) {
+            if (!error){
+                self.tweet = tweet;
+                [self updateCell];
+            }
+        }];
+    }
+    else{
+    [[APIManager shared] retweet:self.tweet completion:^(Tweet * tweet, NSError * error) {
+        if (!error){
+        self.tweet = tweet;
+        [self updateCell];
+        }
+    }];
+    
+    }
+}
+
+- (void)updateCell{
+    self.dateLabel.text = self.tweet.createdAtString;
+    self.nameLabel.text = self.tweet.user.name;
+    self.screenNameLabel.text = self.tweet.user.screenName;
+    self.tweetLabel.text = self.tweet.text;
+    [self.favoriteButton setTitle:[@(self.tweet.favoriteCount) stringValue] forState:UIControlStateNormal];
+    [self.retweetButton setTitle:[@(self.tweet.retweetCount) stringValue] forState:UIControlStateNormal];
+    if (self.tweet.favorited){
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+    }
+    else{
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
+    }
+    if (self.tweet.retweeted){
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet-icon-green"] forState:UIControlStateNormal];
+    }
+    else{
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet-icon"] forState:UIControlStateNormal];
+    }
 }
 
 @end
