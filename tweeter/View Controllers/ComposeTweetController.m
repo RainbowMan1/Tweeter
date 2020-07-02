@@ -18,6 +18,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tweetTextView.layer.borderWidth =1.0f;
+    self.tweetTextView.layer.cornerRadius = 18;
+    self.tweetTextView.clearsOnInsertion=YES;
     // Do any additional setup after loading the view.
 }
 - (IBAction)tweet:(id)sender {
@@ -36,6 +39,9 @@
     [self dismissViewControllerAnimated:true completion:nil];
 }
 
+- (IBAction)textViewTap:(id)sender {
+    [self.view endEditing:YES];
+}
 /*
 #pragma mark - Navigation
 

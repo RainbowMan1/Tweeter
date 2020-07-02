@@ -24,7 +24,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self testreferencing];
     self.tableView.dataSource = self;
     self.tableView.delegate =self;
     self.tweets = [[NSMutableArray alloc] init];
@@ -34,20 +33,12 @@
     [self.tableView addSubview:self.refreshControl];
     
 }
-
--(void)testreferencing{
-    NSString *pointedstr = @"hello";
-     NSMutableArray *array = [[NSMutableArray alloc] init];
-    [array addObject:pointedstr];
-     [array addObject:@"world"];
-         [array addObject:@". I am"];
-         [array addObject:@" running"];
-    NSLog(@"%@",array);
-    //pointedstr* = @"hi";
-     NSLog(@"%@",array);
-    NSLog(@"%p",&pointedstr);
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

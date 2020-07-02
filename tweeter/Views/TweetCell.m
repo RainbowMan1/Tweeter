@@ -63,7 +63,7 @@
 - (void)updateCell{
     self.dateLabel.text = self.tweet.createdAtString;
     self.nameLabel.text = self.tweet.user.name;
-    self.screenNameLabel.text = self.tweet.user.screenName;
+    self.screenNameLabel.text = [@"@" stringByAppendingString:self.tweet.user.screenName];
     self.tweetLabel.text = self.tweet.text;
     [self.favoriteButton setTitle:[@(self.tweet.favoriteCount) stringValue] forState:UIControlStateNormal];
     [self.retweetButton setTitle:[@(self.tweet.retweetCount) stringValue] forState:UIControlStateNormal];
