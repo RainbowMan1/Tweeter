@@ -10,13 +10,14 @@
 #import "ReplyController.h"
 #import "UIImageView+AFNetworking.h"
 #import "APIManager.h"
+#import "ResponsiveLabel.h"
 
 @interface DetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *screenNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *tweetText;
+@property (weak, nonatomic) IBOutlet ResponsiveLabel *tweetText;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 
@@ -31,6 +32,23 @@
 }
 
 - (void)updateUI{
+    self.tweetText.userInteractionEnabled = YES;
+    PatternTapResponder urlTapAction = ^(NSString *tappedString) {
+    NSLog(@"URL Tapped = %@",tappedString);
+    };
+    PatternTapResponder hashTagTapAction = ^(NSString *tappedString) {
+    NSLog(@"HashTag Tapped = %@",tappedString);
+    };
+    PatternTapResponder userHandleTapAction = ^(NSString *tappedString){
+    NSLog(@"Username Handler Tapped = %@",tappedString);
+    };
+    [self.tweetText enableUserHandleDetectionWithAttributes:
+    @{NSForegroundColorAttributeName:[UIColor darkGrayColor],RLTapResponderAttributeName:userHandleTapAction}];
+    [self.tweetText enableHashTagDetectionWithAttributes:
+    @{NSForegroundColorAttributeName:[UIColor grayColor], RLTapResponderAttributeName:hashTagTapAction}];
+    [self.tweetText enableURLDetectionWithAttributes:
+    @{NSForegroundColorAttributeName:[UIColor blueColor],NSUnderlineStyleAttributeName:[NSNumber
+    numberWithInt:1],RLTapResponderAttributeName:urlTapAction}];
     self.dateLabel.text = self.tweet.createdAtString;
     self.nameLabel.text = self.tweet.user.name;
     self.screenNameLabel.text = [@"@" stringByAppendingString:self.tweet.user.screenName];

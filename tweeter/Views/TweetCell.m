@@ -62,6 +62,23 @@
 }
 
 - (void)updateCell{
+    self.tweetLabel.userInteractionEnabled = YES;
+    PatternTapResponder urlTapAction = ^(NSString *tappedString) {
+    NSLog(@"URL Tapped = %@",tappedString);
+    };
+    PatternTapResponder hashTagTapAction = ^(NSString *tappedString) {
+    NSLog(@"HashTag Tapped = %@",tappedString);
+    };
+    PatternTapResponder userHandleTapAction = ^(NSString *tappedString){
+    NSLog(@"Username Handler Tapped = %@",tappedString);
+    };
+    [self.tweetLabel enableUserHandleDetectionWithAttributes:
+    @{NSForegroundColorAttributeName:[UIColor darkGrayColor],RLTapResponderAttributeName:userHandleTapAction}];
+    [self.tweetLabel enableHashTagDetectionWithAttributes:
+    @{NSForegroundColorAttributeName:[UIColor grayColor], RLTapResponderAttributeName:hashTagTapAction}];
+    [self.tweetLabel enableURLDetectionWithAttributes:
+    @{NSForegroundColorAttributeName:[UIColor blueColor],NSUnderlineStyleAttributeName:[NSNumber
+    numberWithInt:1],RLTapResponderAttributeName:urlTapAction}];
     self.dateLabel.text = self.tweet.createdAtString;
     self.nameLabel.text = self.tweet.user.name;
     self.screenNameLabel.text = [@"@" stringByAppendingString:self.tweet.user.screenName];
