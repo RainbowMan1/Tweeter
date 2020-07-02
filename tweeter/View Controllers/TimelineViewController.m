@@ -11,7 +11,10 @@
 #import "TweetCell.h"
 #import "Tweet.h"
 #import "ComposeTweetController.h"
-
+#import "DetailsViewController.h"
+#import "AppDelegate.h"
+#import "LoginViewController.h"
+#import "APIManager.h"
 
 @interface TimelineViewController ()<UITableViewDataSource, UITableViewDelegate, ComposeTweetControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -68,6 +71,30 @@
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.tweets.count;
 }
+- (IBAction)logout:(id)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Are you Sure?"
+                                                                       message:@"Do you want to log out?"
+                                                                preferredStyle:(UIAlertControllerStyleActionSheet)];
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Log Out"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+            [[APIManager shared] logout];
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+            appDelegate.window.rootViewController = loginViewController;
+        }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"No"
+      style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {}];
+    
+    [yesAction setValue:[UIColor redColor] forKey:@"titleTextColor"];
+        
+        [alert addAction:cancelAction];
+    [alert addAction:yesAction];
+        [self presentViewController:alert animated:YES completion:^{}];
+}
 
 
 #pragma mark - Navigation
@@ -83,6 +110,13 @@
             ComposeTweetController *composeController = (ComposeTweetController*)navigationController.topViewController;
             composeController.delegate = self;
         }
+    }
+    else if ([sender isKindOfClass:[TweetCell class]]){
+        TweetCell *pressedCell = (TweetCell*) sender;
+//        UINavigationController *navigationController = [segue destinationViewController];
+        DetailsViewController *detailsViewController = [segue destinationViewController];
+//        DetailsViewController *detailsViewController = (DetailsViewController*)navigationController.topViewController;
+        detailsViewController.tweet = pressedCell.tweet;
     }
 }
 

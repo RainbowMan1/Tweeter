@@ -16,6 +16,8 @@
         self.name = dictionary[@"name"];
         self.screenName = dictionary[@"screen_name"];
         self.userIdStr = dictionary[@"id_str"];
+        NSString *lowResoultionprofileImageURLString = dictionary[@"profile_image_url_https"];
+        self.profileImageURL = [lowResoultionprofileImageURLString stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
         }
         return self;
     }

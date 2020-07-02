@@ -73,6 +73,17 @@ static NSString * const consumerSecret = @"rQzBkGpzYlxd2qL4TglXQ4tTZbe88rCOhNN4T
         completion(nil, error);
     }];
 }
+- (void)postReplyWithText:(NSString *)text inReplyTo: (NSString*) replyId completion:(void (^)(Tweet *, NSError *))completion{
+    NSString *urlString = @"1.1/statuses/update.json?tweet_mode=extended";
+    NSDictionary *parameters = @{@"status": text, @"in_reply_to_status_id":replyId};
+    
+    [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable tweetDictionary) {
+        Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
+        completion(tweet, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+}
 - (void)favorite:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
 
     NSString *urlString = @"1.1/favorites/create.json?tweet_mode=extended";
@@ -109,7 +120,6 @@ static NSString * const consumerSecret = @"rQzBkGpzYlxd2qL4TglXQ4tTZbe88rCOhNN4T
 - (void)unretweet:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
     NSString *urlString = @"1.1/statuses/unretweet/";
     urlString = [[urlString stringByAppendingString:tweet.idStr] stringByAppendingString:@".json?tweet_mode=extended"];
-    NSLog(@"%@", urlString);
     NSDictionary *parameters = @{@"id": tweet.idStr};
     [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable tweetDictionary) {
         Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];

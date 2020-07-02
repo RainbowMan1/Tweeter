@@ -8,6 +8,7 @@
 
 #import "TweetCell.h"
 #import "APIManager.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation TweetCell
 
@@ -65,6 +66,8 @@
     self.nameLabel.text = self.tweet.user.name;
     self.screenNameLabel.text = [@"@" stringByAppendingString:self.tweet.user.screenName];
     self.tweetLabel.text = self.tweet.text;
+    NSURL *url = [NSURL URLWithString:self.tweet.user.profileImageURL];
+    [self.profileImage setImageWithURL:url];
     [self.favoriteButton setTitle:[@(self.tweet.favoriteCount) stringValue] forState:UIControlStateNormal];
     [self.retweetButton setTitle:[@(self.tweet.retweetCount) stringValue] forState:UIControlStateNormal];
     if (self.tweet.favorited){
