@@ -25,7 +25,7 @@
     if (self.tweet.favorited){
         [[APIManager shared] unfavorite:self.tweet completion:^(Tweet * tweet, NSError * error) {
         if (!error){
-            self.tweet = tweet;
+            [self.tweet copyFromTweet:tweet];
       [self updateCell];
         }
     }];
@@ -34,7 +34,7 @@
     else{
     [[APIManager shared] favorite:self.tweet completion:^(Tweet * tweet, NSError * error) {
         if (!error){
-        self.tweet = tweet;
+            [self.tweet copyFromTweet:tweet];
         [self updateCell];
         }
     }];
@@ -44,7 +44,7 @@
     if (self.tweet.retweeted){
         [[APIManager shared] unretweet:self.tweet completion:^(Tweet * tweet, NSError * error) {
             if (!error){
-                self.tweet = tweet;
+                [self.tweet copyFromTweet:tweet];
                 [self updateCell];
             }
         }];
@@ -52,7 +52,7 @@
     else{
     [[APIManager shared] retweet:self.tweet completion:^(Tweet * tweet, NSError * error) {
         if (!error){
-        self.tweet = tweet;
+            [self.tweet copyFromTweet:tweet];
         [self updateCell];
         }
     }];

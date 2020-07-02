@@ -24,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self testreferencing];
     self.tableView.dataSource = self;
     self.tableView.delegate =self;
     self.tweets = [[NSMutableArray alloc] init];
@@ -32,6 +33,19 @@
     [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
     
+}
+
+-(void)testreferencing{
+    NSString *pointedstr = @"hello";
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+    [array addObject:pointedstr];
+     [array addObject:@"world"];
+         [array addObject:@". I am"];
+         [array addObject:@" running"];
+    NSLog(@"%@",array);
+    //pointedstr* = @"hi";
+     NSLog(@"%@",array);
+    NSLog(@"%p",&pointedstr);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,6 +57,7 @@
     // Get timeline
     [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweetsarray, NSError *error) {
         if (tweetsarray) {
+            [self.tweets removeAllObjects];
             [self.tweets addObjectsFromArray: tweetsarray];
             [self.tableView reloadData];
             
@@ -54,8 +69,8 @@
 }
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     TweetCell *cell =[tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
-    Tweet *tweet = self.tweets[indexPath.row];
-    cell.tweet = tweet;
+    
+    cell.tweet = self.tweets[indexPath.row];
     [cell updateCell];
     return cell;
 }

@@ -55,4 +55,15 @@
     }
     return tweets;
 }
+- (void)copyFromTweet:(Tweet*) tweet{
+    self.idStr = tweet.idStr;
+    self.text = tweet.text;
+    self.favoriteCount= tweet.favoriteCount;
+    self.favorited = tweet.favorited;
+    self.retweetCount= tweet.retweetCount;
+    self.retweeted = tweet.retweeted;
+    self.user = tweet.user;
+    self.createdAtString = tweet.createdAtString;
+    self.retweetedByUser =tweet.retweetedByUser;
+}
 @end
