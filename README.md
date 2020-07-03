@@ -53,7 +53,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-Video Walkthrough (Portrait)](https://streamable.com/9dsg9y)
+[Video Walkthrough (Portrait)](https://streamable.com/9dsg9y)
 
 [Video Walkthrough (Landscape)](https://i.imgur.com/IDF9wD1.mp4)
 
